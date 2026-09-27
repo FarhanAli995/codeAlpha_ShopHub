@@ -24,7 +24,9 @@ db.sqlite3-journal
 staticfiles/
 
 # ── Media uploads (user content) ─────────────────
-static/media/
+# Screenshots are committed for the README gallery.
+static/media/avatars/
+static/media/products/
 
 # ── Environment variables ─────────────────────────
 .env
