@@ -1,0 +1,64 @@
+﻿# ── Python ────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.class
+*.pyo
+*.pyd
+.Python
+
+# ── Virtual Environments ──────────────────────────
+venv/
+env/
+.env/
+.venv/
+ENV/
+
+# ── Node.js dependencies ─────────────────────────
+node_modules/
+
+# ── Django ────────────────────────────────────────
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+staticfiles/
+
+# ── Media uploads (user content) ─────────────────
+# Uncomment the next line if you do NOT want to commit media to git:
+# static/media/
+
+# ── Environment variables ─────────────────────────
+.env
+.env.*
+*.env
+
+# ── IDEs ──────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── OS files ──────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── Distribution / Packaging ──────────────────────
+dist/
+build/
+*.egg-info/
+*.egg
+MANIFEST
+
+# ── Testing ───────────────────────────────────────
+.pytest_cache/
+htmlcov/
+.coverage
+coverage.xml
+
+# ── Migrations (optional — keep or ignore) ────────
+# If you want teammates to share migrations, leave them OUT of .gitignore.
+# Uncomment to ignore:
+# */migrations/*.py
+# !*/migrations/__init__.py

@@ -1,0 +1,34 @@
+<div class="top-strip text-bg-success py-2">
+  <div class="container-xxl d-flex flex-wrap justify-content-center align-items-center gap-2 small">
+    <strong>Fresh deals every day</strong>
+    <span>Save up to 70% on selected products</span>
+    <span class="badge bg-white text-success">08</span>
+    <span class="badge bg-white text-success">52</span>
+    <span class="badge bg-white text-success">59</span>
+  </div>
+</div>
+<header class="site-header">
+  <nav class="navbar navbar-expand-lg bg-white border-bottom">
+    <div class="container-xxl">
+      <a class="navbar-brand fw-bold" href="{% url 'core:home' %}"><i class="bi bi-basket2-fill text-success me-2"></i>ShopHub</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#shop-navigation" aria-controls="shop-navigation" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="shop-navigation">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-lg-2">
+          <li class="nav-item"><a class="nav-link" href="{% url 'core:home' %}">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'products:list' %}">Categories</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'products:list' %}?category=grocery-food">Grocery</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'core:home' %}#deals">Deals</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'products:list' %}">Shop</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'core:wishlist' %}">Wishlist</a></li>
+        </ul>
+        <div class="d-flex align-items-center gap-3">
+          <a class="link-secondary" href="{% url 'products:list' %}" aria-label="Search"><i class="bi bi-search"></i></a>
+          <a class="link-secondary position-relative" href="{% url 'cart:view' %}" aria-label="Cart"><i class="bi bi-cart3"></i><span class="badge rounded-pill text-bg-success">{{ cart_count|default:0 }}</span></a>
+          {% if request.user.is_authenticated %}<a class="link-secondary" href="{% url 'accounts:profile' %}"><i class="bi bi-person me-1"></i>Account</a>{% else %}<a class="link-secondary" href="{% url 'accounts:login' %}"><i class="bi bi-person me-1"></i>Sign in</a>{% endif %}
+        </div>
+      </div>
+    </div>
+  </nav>
+</header>

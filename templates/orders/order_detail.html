@@ -1,0 +1,35 @@
+{% extends 'core/base.html' %} {% block title %}{{ order.order_number }} |
+ShopHub{% endblock %} {% block content %}{% include 'core/store_header.html' %}
+<main class="container-xxl py-5">
+  <header class="border-bottom pb-4 mb-4"><p class="text-success fw-semibold text-uppercase small">Order details</p><h1 class="h2">{{ order.order_number }}</h1><p class="text-secondary mb-0">Placed {{ order.created_at|date:'F d, Y' }} <span class="badge text-bg-success">{{ order.get_status_display }}</span></p></header>
+  <div class="row g-4">
+    <section class="col-12 col-lg-8"><div class="card"><div class="card-body">
+      <h2 class="h5 mb-3">Items in your order</h2>
+      {% for item in order.items.all %}
+      <div class="d-flex justify-content-between gap-3 py-3 border-bottom">
+        <div>
+          <strong>{{ item.product_name }}</strong
+          ><small
+            >{{ item.quantity }} x ${{ item.unit_price|floatformat:2 }}</small
+          >
+        </div>
+        <strong>${{ item.line_total|floatformat:2 }}</strong>
+      </div>
+      {% endfor %}
+    </div></div></section>
+    <aside class="col-12 col-lg-4"><div class="card"><div class="card-body">
+      <h2 class="h5">Delivery</h2>
+      <p>
+        <strong>{{ order.shipping_name }}</strong><br />{{ order.shipping_street
+        }}<br />{{ order.shipping_city }}, {{ order.shipping_country }}<br />{{
+        order.shipping_phone }}
+      </p>
+      <hr />
+      <div class="d-flex justify-content-between fw-bold">
+        <span>Total</span
+        ><strong>${{ order.total_amount|floatformat:2 }}</strong>
+      </div>
+    </div></div></aside>
+  </div>
+</main>
+{% endblock %}

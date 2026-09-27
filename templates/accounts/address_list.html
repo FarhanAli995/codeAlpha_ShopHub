@@ -1,0 +1,34 @@
+{% extends 'core/base.html' %} {% block title %}Delivery addresses | ShopHub{% endblock %} {% block content %}{% include 'core/store_header.html' %}
+<main class="container-xxl py-5">
+  <header class="border-bottom pb-4 mb-4">
+    <p class="text-success fw-semibold text-uppercase small mb-2">Delivery details</p>
+    <h1 class="h2">Your addresses</h1>
+    <p class="text-secondary mb-0">Choose where your ShopHub orders should arrive.</p>
+  </header>
+  <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3">
+    {% for address in addresses %}
+    <div class="col"><article class="card h-100 address-card"><div class="card-body d-flex flex-column">
+      <span class="badge text-bg-success align-self-start mb-2">{% if address.is_primary %}Primary{% else %}Saved address{% endif %}</span>
+      <h2 class="h5">{{ address.full_name }}</h2>
+      <p class="text-secondary">
+        {{ address.street_address }}<br />{{ address.city }}, {{ address.state
+        }} {{ address.postal_code }}<br />{{ address.country }}<br />{{
+        address.phone }}
+      </p>
+      <div class="d-flex flex-wrap align-items-center gap-2 border-top pt-3 mt-auto">
+        <a class="btn btn-outline-success btn-sm" href="{% url 'accounts:address_edit' address.pk %}">Edit</a>
+        <a class="btn btn-outline-secondary btn-sm" href="{% url 'accounts:address_delete' address.pk %}">Delete</a>
+        {% if not address.is_primary %}<form method="post" action="{% url 'accounts:address_primary' address.pk %}">{% csrf_token %}<button class="btn btn-success btn-sm">Set primary</button></form>{% endif %}
+      </div>
+    </div></article></div>
+    {% empty %}
+    <div class="col-12"><div class="text-center border rounded p-5">
+      <i class="bi bi-geo-alt fs-1 text-success"></i>
+      <h2 class="h4 mt-3">No saved addresses</h2>
+      <p class="text-secondary">Add an address to speed up checkout.</p>
+    </div>
+    {% endfor %}<a href="{% url 'accounts:address_add' %}" class="add-address"
+      ><i class="bi bi-plus-circle fs-3"></i><span>Add a new address</span></a>
+  </div>
+</main>
+{% endblock %}

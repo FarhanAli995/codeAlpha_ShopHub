@@ -1,0 +1,142 @@
+{% extends 'core/base.html' %}
+{% load static %}
+{% block content %}
+{% include 'core/store_header.html' %}
+<main class="container-xxl py-5">
+  <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 border-bottom pb-4 mb-4">
+    <div>
+      <p class="eyebrow">SHOPHUB CATALOG</p>
+      <h1>
+        {% if selected_category %}{{ selected_category|title }}{% else %}All
+        products{% endif %}
+      </h1>
+      <p>
+        Browse products from every department, with fresh offers updated from
+        the store.
+      </p>
+    </div>
+    <form class="d-flex gap-2" method="get" action="{% url 'products:list' %}">
+      <input
+        class="form-control"
+        type="search"
+        name="q"
+        value="{{ query }}"
+        placeholder="Search products..."
+      /><button class="btn btn-outline-success" aria-label="Search"><i class="bi bi-search"></i></button>
+    </form>
+  </div>
+  <div class="row g-4">
+    <aside class="col-12 col-lg-3 catalog-sidebar">
+      <div class="card p-3">
+      <strong class="mb-2">Departments</strong>
+      <div class="list-group list-group-flush">
+      <a
+        href="{% url 'products:list' %}"
+        class="list-group-item list-group-item-action {% if not selected_category %}bg-success text-white border-success{% endif %}"
+        >All products</a
+      >{% for category in categories %}<a
+        href="{% url 'products:list' %}?category={{ category.slug }}"
+        class="list-group-item list-group-item-action {% if selected_category == category.slug %}bg-success text-white border-success{% endif %}"
+        >{{ category.name }}</a
+      >{% endfor %}
+        </div>
+      <form class="filter-form" method="get" action="{% url 'products:list' %}">
+        {% if selected_category %}<input
+          type="hidden"
+          name="category"
+          value="{{ selected_category }}"
+        />{% endif %} {% if query %}<input
+          type="hidden"
+          name="q"
+          value="{{ query }}"
+        />{% endif %}
+        <div class="filter-heading">
+          <strong>Filter products</strong
+          ><button type="reset" class="btn btn-link btn-sm p-0">Clear</button>
+        </div>
+        <label for="filter-brand" class="form-label">Brand</label>
+        <select id="filter-brand" name="brand" class="form-select">
+          <option value="">All brands</option>
+          {% for brand in brands %}
+          <option
+            value="{{ brand.slug }}"
+            {% if selected_brand == brand.slug %}selected{% endif %}
+          >
+            {{ brand.name }}
+          </option>
+          {% endfor %}
+        </select>
+        <label for="min-price" class="form-label">Price range</label>
+        <div class="d-flex align-items-center gap-2">
+          <input
+            class="form-control"
+            id="min-price"
+            name="min_price"
+            type="number"
+            min="0"
+            step="0.01"
+            value="{{ min_price }}"
+            placeholder="Min"
+          /><span>to</span
+          ><input
+            class="form-control"
+            id="max-price"
+            name="max_price"
+            type="number"
+            min="0"
+            step="0.01"
+            value="{{ max_price }}"
+            placeholder="Max"
+          />
+        </div>
+        <div class="d-grid gap-1">
+          <input
+            class="form-range price-range"
+            data-target="min-price"
+            type="range"
+            min="0"
+            max="500"
+            step="1"
+            value="{{ min_price|default:'0' }}"
+            aria-label="Minimum price"
+          /><input
+            class="form-range price-range"
+            data-target="max-price"
+            type="range"
+            min="0"
+            max="500"
+            step="1"
+            value="{{ max_price|default:'500' }}"
+            aria-label="Maximum price"
+          />
+        </div>
+        <input type="hidden" name="sort" value="{{ sort }}" />
+        <button class="btn btn-success w-100 mt-2" type="submit">
+          <i class="bi bi-funnel"></i> Apply filters
+        </button>
+      </form>
+      </div>
+    </aside>
+    <section class="col-12 col-lg-9">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <span>{{ page_obj.paginator.count }} products found</span>
+        <select class="form-select w-auto sort-select" aria-label="Sort products">
+          <option value="newest" {% if sort == 'newest' %}selected{% endif %}>Newest first</option>
+          <option value="price_low" {% if sort == 'price_low' %}selected{% endif %}>Price: low to high</option>
+          <option value="price_high" {% if sort == 'price_high' %}selected{% endif %}>Price: high to low</option>
+          <option value="name" {% if sort == 'name' %}selected{% endif %}>Name A-Z</option>
+        </select>
+      </div>
+      <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 g-3">
+        {% for product in products %}<div class="col">{% include 'core/product_card.html' with product=product %}</div>{% empty %}
+        <div class="col-12 text-center py-5">
+          <i class="bi bi-basket"></i>
+          <h2>No products found</h2>
+          <p>Try another department or search term.</p>
+        </div>
+        {% endfor %}
+      </div>
+    </section>
+  </div>
+</main>
+{% endblock %}

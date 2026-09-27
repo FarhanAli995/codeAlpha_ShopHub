@@ -1,0 +1,17 @@
+{% extends 'core/base.html' %}
+{% block title %}Your cart | ShopHub{% endblock %}
+{% block content %}{% include 'core/store_header.html' %}<main class="container-xxl py-5">
+	<header class="border-bottom pb-4 mb-4"><p class="text-success fw-semibold text-uppercase small">Shopping bag</p><h1 class="h2">Your cart</h1><p class="text-secondary mb-0">Review your fresh picks before checkout.</p></header>
+	{% if items %}<div class="row g-4">
+		<section class="col-12 col-lg-8"><div class="card"><div class="list-group list-group-flush">
+			{% for item in items %}<article class="list-group-item d-flex flex-column flex-sm-row align-items-sm-center gap-3 cart-row">
+				<div class="rounded bg-light d-grid p-3 text-success"><i class="bi bi-basket fs-3"></i></div>
+				<div class="flex-grow-1"><h2 class="h6 mb-1">{{ item.product.name }}</h2><small class="text-secondary d-block">{{ item.variant.name|default:'Standard selection' }}</small><strong>${{ item.unit_price|floatformat:2 }}</strong></div>
+				<form method="post" action="{% url 'cart:update' item.id %}" class="input-group quantity-form w-auto">{% csrf_token %}<input class="form-control" type="number" name="quantity" value="{{ item.quantity }}" min="1" max="99" aria-label="Quantity"><button class="btn btn-outline-success" type="submit" aria-label="Update quantity"><i class="bi bi-arrow-repeat"></i></button></form>
+				<strong class="text-nowrap">${{ item.line_total|floatformat:2 }}</strong>
+				<form method="post" action="{% url 'cart:remove' item.id %}">{% csrf_token %}<button class="btn btn-outline-secondary" type="submit" aria-label="Remove item"><i class="bi bi-x-lg"></i></button></form>
+			</article>{% endfor %}
+		</div></div></section>
+		<aside class="col-12 col-lg-4"><div class="card"><div class="card-body"><h2 class="h5 mb-4">Order summary</h2><div class="d-flex justify-content-between py-2"><span>Subtotal</span><strong>${{ cart.subtotal|floatformat:2 }}</strong></div><div class="d-flex justify-content-between py-2"><span>Delivery</span><strong>Free</strong></div><hr><div class="d-flex justify-content-between fw-bold py-2"><span>Total</span><strong>${{ cart.subtotal|floatformat:2 }}</strong></div><a href="{% url 'orders:checkout' %}" class="btn btn-success w-100 mt-3">Proceed to checkout <i class="bi bi-arrow-right"></i></a></div></div></aside>
+	</div>{% else %}<div class="card"><div class="card-body text-center p-5"><i class="bi bi-basket fs-1 text-success"></i><h2 class="h4 mt-3">Your cart is waiting</h2><p class="text-secondary">Add something lovely from the store to get started.</p><a href="{% url 'products:list' %}" class="btn btn-success">Explore products</a></div></div>{% endif %}
+</main>{% endblock %}

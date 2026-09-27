@@ -1,0 +1,58 @@
+<article class="card h-100 product-card">
+  {% if product.discount_percentage %}<span class="badge text-bg-success position-absolute top-0 start-0 m-2">ON SALE</span>{% endif %}
+  <div class="product-photo card-img-top">
+    {% with product.images.first as image %} {% if image %}
+    <img src="{{ image.image.url }}" alt="{{ product.name }}" />
+    {% else %} {% if product.category.slug == 'home-products' %}<img
+      src="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=500&q=80"
+      alt="{{ product.name }}"
+    />
+    {% elif product.category.slug == 'wearing-products' %}<img
+      src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=500&q=80"
+      alt="{{ product.name }}"
+    />
+    {% elif product.category.slug == 'electronics' %}<img
+      src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?auto=format&fit=crop&w=500&q=80"
+      alt="{{ product.name }}"
+    />
+    {% elif product.category.slug == 'technology' %}<img
+      src="https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=500&q=80"
+      alt="{{ product.name }}"
+    />
+    {% elif product.category.slug == 'beauty-health' %}<img
+      src="https://images.unsplash.com/photo-1556228578-8c89e6adf883?auto=format&fit=crop&w=500&q=80"
+      alt="{{ product.name }}"
+    />
+    {% elif product.category.slug == 'sports-outdoors' %}<img
+      src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=500&q=80"
+      alt="{{ product.name }}"
+    />
+    {% elif product.category.slug == 'grocery-food' %}<img
+      src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=500&q=80"
+      alt="{{ product.name }}"
+    />
+    {% elif product.category.slug == 'books-stationery' %}<img
+      src="https://images.unsplash.com/photo-1455885666463-7d34f5d9b2a6?auto=format&fit=crop&w=500&q=80"
+      alt="{{ product.name }}"
+    />
+    {% else %}<i class="bi bi-box-seam"></i>{% endif %} {% endif %} {% endwith %}
+  </div>
+  <div class="card-body d-flex flex-column">
+  <h3 class="card-title fs-6">
+    {% if product.slug %}
+    <a href="{% url 'products:detail' product.slug %}">{{ product.name }}</a>
+    {% else %} {{ product.name }} {% endif %}
+  </h3>
+  <div class="mt-auto">
+    <strong>${{ product.price|floatformat:2 }}</strong>
+    {% if product.compare_at_price %}<del
+      >${{ product.compare_at_price|floatformat:2 }}</del
+    >{% endif %}
+    <small>/ 1 each</small>
+  </div>
+  {% if product.slug %}<form class="cart-add-form mt-3" method="post" action="{% url 'cart:add' product.slug %}">
+    {% csrf_token %}<input type="hidden" name="quantity" value="1" /><input type="hidden" name="next" value="{{ request.path }}" />
+    <button class="btn btn-success w-100" type="submit" aria-label="Add {{ product.name }} to cart"><i class="bi bi-cart-plus me-1"></i>Add to cart</button>
+  </form>{% else %}<button class="btn btn-outline-secondary w-100 mt-3" type="button" disabled>Unavailable</button>{% endif %}
+  </div>
+</article>

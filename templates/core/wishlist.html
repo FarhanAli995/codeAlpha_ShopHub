@@ -1,0 +1,25 @@
+{% extends 'core/base.html' %} {% block title %}Wishlist | ShopHub{% endblock %}
+{% block content %}{% include 'core/store_header.html' %}
+<main class="container-xxl py-5">
+  <header class="border-bottom pb-4 mb-4"><p class="text-success fw-semibold text-uppercase small">Saved for later</p><h1 class="h2">Your wishlist</h1><p class="text-secondary mb-0">Keep your favorite ShopHub finds close.</p></header>
+  <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 g-3">
+    {% for product in products %}
+    <div class="col wishlist-item">
+      {% include 'core/product_card.html' with product=product %}
+      <form class="mt-2" method="post" action="{% url 'core:wishlist_remove' product.slug %}">
+        {% csrf_token %}<button class="btn btn-outline-danger btn-sm w-100">
+          Remove from wishlist
+        </button>
+      </form>
+    </div>
+    {% empty %}
+    <div class="col-12 text-center py-5">
+      <i class="bi bi-heart fs-1 text-success"></i>
+      <h2 class="h4 mt-3">Your wishlist is empty</h2>
+      <p class="text-secondary">Save products you love and find them here later.</p>
+      <a href="{% url 'products:list' %}" class="btn btn-success">Browse products</a>
+    </div>
+    {% endfor %}
+  </div>
+</main>
+{% endblock %}

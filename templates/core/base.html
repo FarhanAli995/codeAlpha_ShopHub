@@ -1,0 +1,46 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      {% block title %}ShopHub | Fresh groceries delivered{% endblock %}
+    </title>
+    <link
+      href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}"
+      rel="stylesheet"
+    />
+    <link
+      href="{% static 'vendor/bootstrap-icons/bootstrap-icons.min.css' %}"
+      rel="stylesheet"
+    />
+    <link href="{% static 'css/main.css' %}" rel="stylesheet" />
+    {% block extra_css %}{% endblock %}
+  </head>
+  <body>
+    <div class="site-shell container-fluid px-0">
+      {% block content %}{% endblock %}
+    </div>
+    <div class="page-zoom-controls" role="group" aria-label="Page zoom controls">
+      <button type="button" data-page-zoom="out" aria-label="Zoom out" title="Zoom out">
+        <i class="bi bi-zoom-out" aria-hidden="true"></i>
+      </button>
+      <button type="button" data-page-zoom="in" aria-label="Zoom in" title="Zoom in">
+        <i class="bi bi-zoom-in" aria-hidden="true"></i>
+      </button>
+    </div>
+
+    <!-- Scripts -->
+    <script
+      src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"
+      onerror="
+        this.onerror = null;
+        this.src =
+          'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js';
+      "
+    ></script>
+    <script src="{% static 'javascript/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+  </body>
+</html>

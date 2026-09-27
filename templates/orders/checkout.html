@@ -1,0 +1,60 @@
+{% extends 'core/base.html' %} {% block title %}Checkout | ShopHub{% endblock %}
+{% block content %}{% include 'core/store_header.html' %}
+<main class="container-xxl py-5">
+  <header class="border-bottom pb-4 mb-4"><p class="text-success fw-semibold text-uppercase small">Secure checkout</p><h1 class="h2">Complete your order</h1><p class="text-secondary mb-0">Fresh picks, carefully packed and delivered to you.</p></header>
+  <form method="post" class="row g-4">
+    {% csrf_token %}
+    <section class="col-12 col-lg-8"><div class="card"><div class="card-body">
+      <h2 class="h5 mb-3">Delivery address</h2>
+      {% for address in addresses %}<label class="form-check border rounded p-3 mb-2 d-flex gap-3 align-items-start"
+        ><input
+          class="form-check-input mt-1"
+          type="radio"
+          name="address"
+          value="{{ address.id }}"
+          {%
+          if
+          forloop.first
+          %}checked{%
+          endif
+          %}
+        /><span
+          ><strong>{{ address.full_name }}</strong><br />{{
+          address.street_address }}, {{ address.city }}<br />{{ address.phone
+          }}</span
+        ></label
+      >{% empty %}
+      <p class="alert alert-warning">
+        Add a delivery address in your account before checking out.
+      </p>
+      {% endfor %}
+      <h2 class="h5 mt-4 mb-3">Payment method</h2>
+      {% for value, label in payment_methods %}<label class="form-check border rounded p-3 mb-2 d-flex gap-3 align-items-center"
+        ><input
+          class="form-check-input mt-0"
+          type="radio"
+          name="payment_method"
+          value="{{ value }}"
+          checked
+        />
+        {{ label }}</label
+      >{% endfor %}<button class="btn btn-success mt-3" type="submit">
+        Place order <i class="bi bi-check2"></i>
+      </button>
+    </div></div></section>
+    <aside class="col-12 col-lg-4"><div class="card"><div class="card-body">
+      <h2 class="h5 mb-3">Your order</h2>
+      {% for item in items %}
+      <div class="d-flex justify-content-between gap-3 py-2 border-bottom">
+        <span>{{ item.quantity }} x {{ item.product.name }}</span
+        ><strong>${{ item.line_total|floatformat:2 }}</strong>
+      </div>
+      {% endfor %}
+      <hr />
+      <div class="summary-total">
+        <span>Total</span><strong>${{ cart.subtotal|floatformat:2 }}</strong>
+      </div>
+    </div></div></aside>
+  </form>
+</main>
+{% endblock %}

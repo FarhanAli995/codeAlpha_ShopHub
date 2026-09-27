@@ -1,0 +1,10 @@
+{% extends 'core/base.html' %} {% block title %}Sign in | ShopHub{% endblock %}
+{% block content %}{% include 'core/store_header.html' %}
+<main class="container py-5"><div class="row justify-content-center"><div class="col-12 col-md-8 col-lg-5">
+  <section class="card shadow-sm"><div class="card-body p-4 p-lg-5">
+    <div class="text-center mb-4"><i class="bi bi-basket2-fill fs-1 text-success"></i><p class="text-success fw-semibold text-uppercase small mt-3 mb-2">Welcome back</p><h1 class="h3">Sign in to ShopHub</h1><p class="text-secondary">Your next great find is only a moment away.</p></div>
+    <form method="post" class="d-grid gap-3">{% csrf_token %}{% for field in form %}<div>{{ field.label_tag }}{{ field }}{% for error in field.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}</div>{% endfor %}{% if form.non_field_errors %}<div class="alert alert-danger mb-0">{{ form.non_field_errors }}</div>{% endif %}<button class="btn btn-success" type="submit">Sign in <i class="bi bi-arrow-right"></i></button></form>
+    <p class="text-center text-secondary mt-4 mb-0">New to ShopHub? <a class="link-success" href="{% url 'accounts:register' %}">Create an account</a></p>
+  </div></section>
+</div></div></main>
+{% endblock %}

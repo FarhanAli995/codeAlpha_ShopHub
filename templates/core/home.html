@@ -1,0 +1,222 @@
+{% extends 'core/base.html' %} {% load static humanize %} {% block content %}
+{% include 'core/store_header.html' %}
+<main>
+  <section class="hero">
+    <div class="hero-slides" aria-hidden="true">
+      <img
+        class="is-active"
+        src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1800&q=85"
+        alt="Fresh vegetables"
+        data-eyebrow="FRESH FROM THE FARM"
+        data-title="Healthy vegetables for you"
+        data-highlight="fresh from the farm"
+        data-description="We bring crisp, seasonal produce straight from local growers to your table."
+      />
+      <img
+        src="https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=1800&q=85"
+        alt="Fresh produce and meal ingredients"
+        data-eyebrow="GOOD FOOD, EVERY DAY"
+        data-title="Make every meal"
+        data-highlight="a little more delicious"
+        data-description="Find fresh ingredients and everyday favorites for meals worth sharing."
+      />
+      <img
+        src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1800&q=85"
+        alt="Healthy salad ingredients"
+        data-eyebrow="FEEL GOOD ABOUT FRESH"
+        data-title="Eat well and feel"
+        data-highlight="your best every day"
+        data-description="Colorful greens, ripe produce, and better choices made simple."
+      />
+      <img
+        src="https://images.unsplash.com/photo-1608686207856-001b95cf60ca?auto=format&fit=crop&w=1800&q=85"
+        alt="Fresh market produce"
+        data-eyebrow="FRESH PICKS, DELIVERED"
+        data-title="The freshest picks"
+        data-highlight="delivered right to you"
+        data-description="Shop the market's best produce with care from farm to front door."
+      />
+    </div>
+    <div class="container-xxl px-3 px-lg-4 hero-copy">
+      <p class="eyebrow" data-hero-eyebrow>FRESH FROM THE FARM</p>
+      <h1><span data-hero-title>Healthy vegetables for you</span><br /><em data-hero-highlight>fresh from the farm</em></h1>
+      <p class="hero-sub" data-hero-description>
+        We bring crisp, seasonal produce straight from local growers to your table.
+      </p>
+      <form class="input-group hero-search" method="get" action="{% url 'products:list' %}">
+        <input
+          class="form-control"
+          type="search"
+          name="q"
+          placeholder="What are you looking for..."
+        /><button class="btn btn-outline-success" aria-label="Search"><i class="bi bi-search"></i></button>
+      </form>
+    </div>
+  </section>
+  <section class="container-xxl py-4">
+    <div class="row g-3">
+      <a href="{% url 'products:list' %}?category=home-products" class="col-12 col-md-4 text-decoration-none"><span class="card h-100 quick-card quick-yellow flex-row align-items-center gap-3 p-3"><i class="bi bi-bag-heart"></i><span><b>Spring cleaning for home</b><small>Shop home products</small></span></span></a>
+      <a href="{% url 'products:list' %}?category=grocery-food" class="col-12 col-md-4 text-decoration-none"><span class="card h-100 quick-card quick-green flex-row align-items-center gap-3 p-3"><i class="bi bi-basket"></i><span><b>Fresh healthy food for every day</b><small>Shop grocery products</small></span></span></a>
+      <a href="{% url 'products:list' %}?category=technology" class="col-12 col-md-4 text-decoration-none"><span class="card h-100 quick-card quick-blue flex-row align-items-center gap-3 p-3"><i class="bi bi-box-seam"></i><span><b>Technology items with discount</b><small>Shop technology products</small></span></span></a>
+    </div>
+  </section>
+  <section class="container-xxl py-5" id="categories">
+    <div class="text-center mb-4">
+      <h2 class="h3">Shop by category</h2>
+      <p class="text-secondary">
+        Find everything from home products and fashion to electronics and
+        technology
+      </p>
+    </div>
+    <div class="row g-3 text-center">
+      {% for category in categories %}<a
+        href="{% url 'products:list' %}?category={{ category.slug }}"
+        class="col-6 col-sm-3 col-xxl category-item text-decoration-none"
+        ><div class="category-image">
+          {% if category.image %}<img
+            src="{{ category.image.url }}"
+            alt="{{ category.name }}"
+          />{% else %}<i class="bi {{ category.icon|default:'bi-grid' }}"></i>{% endif %}
+        </div>
+        <span>{{ category.name }}</span
+        ><small>{{ category.product_count }} products</small></a
+      >
+      {% endfor %}
+    </div>
+  </section>
+  <section class="container-xxl py-5">
+    <div class="text-center mb-4">
+      <h2 class="h3">Offers made for every kind of shopper</h2>
+      <p class="text-secondary">Discover special prices across our most popular departments</p>
+    </div>
+    <div class="row row-cols-1 row-cols-lg-3 g-3">
+      {% for category in category_offers %}<a
+        href="{% url 'products:list' %}?category={{ category.slug }}"
+        class="col card h-100 offer-card {{ category.offer_class }} flex-row text-decoration-none"
+        ><div class="card-body">
+          <small>{{ category.name }}</small>
+          <h3>{{ category.offer_title }}</h3>
+          <strong>{{ category.offer_text }}</strong
+          ><span>Shop offer <i class="bi bi-arrow-right"></i></span>
+        </div>
+        <i class="offer-icon bi {{ category.icon }}"></i></a
+      >
+      {% endfor %}
+    </div>
+  </section>
+  <section class="container-xxl py-5" id="products">
+    <div class="text-center mb-4">
+      <h2 class="h3">Best seller grocery near you</h2>
+      <p class="text-secondary">
+        We provide best quality &amp; fresh grocery items near your location
+      </p>
+    </div>
+    <div class="row row-cols-2 row-cols-md-3 row-cols-xl-4 g-3">
+      {% for product in featured_products|slice:":15" %}<div class="col">{% include 'core/product_card.html' with product=product %}</div>{% endfor %}
+    </div>
+  </section>
+  <section class="discount-banner" id="deals">
+    <div class="container-xxl py-4">
+      <p>Fresh food, honest prices</p>
+      <h2>Super Discount <strong>70% OFF</strong></h2>
+      <span
+        >We source and sell the very best, farm and pork,<br />
+        sourced with the greatest care from farmers.</span
+      ><a href="#products">Explore now</a>
+    </div>
+  </section>
+  <section class="container-xxl py-5">
+    <div class="text-center mb-4">
+      <h2 class="h3">Popular product that we sold</h2>
+      <p class="text-secondary">
+        We provide best quality &amp; fresh grocery items near your location
+      </p>
+    </div>
+    <div class="row row-cols-2 row-cols-md-3 row-cols-xl-5 g-3">
+      {% for product in new_products|slice:":10" %}<div class="col">{% include 'core/product_card.html' with product=product %}</div>{% endfor %}
+    </div>
+  </section>
+  <section class="container-xxl py-5">
+    <div class="text-center mb-4">
+      <h2 class="h3">Curated collections</h2>
+      <p class="text-secondary">We have categories the best quality grocery items</p>
+    </div>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-4 g-3">
+      <div class="col"><article class="card h-100 collection-card">
+        <div class="collection-photo collection-one"></div>
+        <div class="card-body"><b>Most popular item for fast food</b><small class="text-secondary d-block mt-2">Tasty and spicy fast food with different flavors.</small></div>
+      </article></div>
+      <div class="col"><article class="card h-100 collection-card">
+        <div class="collection-photo collection-two"></div>
+        <div class="card-body"><b>Authentic Japanese food in real taste</b><small class="text-secondary d-block mt-2">Your body's way of telling you that it's make strong</small></div>
+      </article></div>
+      <div class="col"><article class="card h-100 collection-card">
+        <div class="collection-photo collection-three"></div>
+        <div class="card-body"><b>Explore our family of freshest foods</b><small class="text-secondary d-block mt-2">Your parts way of telling you that it's make taste</small></div>
+      </article></div>
+      <div class="col"><article class="card h-100 collection-card">
+        <div class="collection-photo collection-electronics"></div>
+        <div class="card-body"><b>Discover our latest electronics</b><small class="text-secondary d-block mt-2">Explore useful technology for work and home.</small></div>
+      </article></div>
+    </div>
+  </section>
+  <section class="container-fluid bg-light py-5 mt-4">
+    <div class="container-xxl d-flex flex-wrap align-items-center justify-content-between gap-4 app-inner">
+      <div>
+        <h2>Make your online shop easier<br />with our mobile app</h2>
+        <p>
+          ShopHub makes online grocery shopping fast and easy. Get<br />groceries
+          delivered right at your doorstep from fresh food.
+        </p>
+        <a href="#"><i class="bi bi-apple"></i> Download on the App Store</a
+        ><a href="#"><i class="bi bi-google-play"></i> Get it on Google Play</a>
+      </div>
+      <div class="app-bag"><i class="bi bi-bag-heart-fill"></i></div>
+    </div>
+  </section>
+</main>
+<footer class="container-fluid border-top pt-5">
+  <div class="container-xxl row g-4">
+    <div class="col-12 col-md-6 col-lg-3">
+      <a class="brand" href="#"><i class="bi bi-basket2-fill"></i> ShopHub</a>
+      <p>
+        We offer high-quality foods and the best delivery service, and the food
+        market you can calmly trust.
+      </p>
+      <div class="socials">
+        <i class="bi bi-facebook"></i><i class="bi bi-twitter-x"></i
+        ><i class="bi bi-youtube"></i>
+      </div>
+    </div>
+    <div class="col-6 col-lg-2">
+      <b>About Us</b><a href="#">About us</a><a href="#">Contact us</a
+      ><a href="#">About team</a><a href="#">Customer Support</a>
+    </div>
+    <div class="col-6 col-lg-2">
+      <b>Our Information</b><a href="#">Privacy policy update</a
+      ><a href="#">Terms &amp; conditions</a><a href="#">Return Policy</a
+      ><a href="#">Site Map</a>
+    </div>
+    <div class="col-6 col-lg-2">
+      <b>Community</b><a href="#">Announcements</a><a href="#">Answer center</a
+      ><a href="#">Discussion boards</a><a href="#">Giving works</a>
+    </div>
+    <div class="col-12 col-md-6 col-lg-3">
+      <b>Subscribe Now</b>
+      <p>
+        Subscribe your email for newsletter and receive news based on your
+        interest
+      </p>
+      <form class="input-group">
+        <input class="form-control" type="email" placeholder="Write your email here" /><button class="btn btn-success" type="submit">
+          <i class="bi bi-send-fill"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+  <div class="container-xxl border-top mt-4 py-3 small text-secondary">
+    © Copyright 2026 ShopHub. All rights reserved
+    <span>VISA &nbsp; PayPal &nbsp; Mastercard</span>
+  </div>
+</footer>
+{% endblock %}

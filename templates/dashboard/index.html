@@ -1,0 +1,45 @@
+{% extends 'core/base.html' %}{% block title %}ShopHub dashboard{% endblock %}{% block content %}{% include 'core/store_header.html' %}
+<main class="container-xxl py-5">
+  <header class="border-bottom pb-4 mb-4"><p class="text-success fw-semibold text-uppercase small">ShopHub operations</p><h1 class="h2">Store dashboard</h1><p class="text-secondary mb-0">Keep an eye on products, orders, customers, and recent sales.</p></header>
+  <div class="row row-cols-2 row-cols-lg-4 g-3 mb-4">
+    <div class="col"><div class="card h-100"><div class="card-body"><i class="bi bi-box-seam fs-4 text-success"></i><small class="d-block text-secondary mt-2">Products</small><strong class="fs-3">{{ product_count }}</strong></div></div></div>
+    <div class="col"><div class="card h-100"><div class="card-body"><i class="bi bi-receipt fs-4 text-success"></i><small class="d-block text-secondary mt-2">Orders</small><strong class="fs-3">{{ order_count }}</strong></div></div></div>
+    <div class="col"><div class="card h-100"><div class="card-body"><i class="bi bi-people fs-4 text-success"></i><small class="d-block text-secondary mt-2">Customers</small><strong class="fs-3">{{ customer_count }}</strong></div></div></div>
+    <div class="col"><div class="card h-100"><div class="card-body"><i class="bi bi-clock-history fs-4 text-success"></i><small class="d-block text-secondary mt-2">Pending orders</small><strong class="fs-3">{{ pending_order_count }}</strong></div></div></div>
+  </div>
+  <div class="row g-4 mb-4">
+    <section class="col-12 col-lg-8"><div class="card h-100"><div class="card-body">
+      <h2 class="h5">Sales this week</h2>
+      <div class="trend-bars">
+        {% for row in sales_trend %}
+        <div>
+          <span
+            style="height: {% widthratio row.value sales_trend_max 100 %}%"
+          ></span
+          ><small>{{ row.label }}</small>
+        </div>
+        {% endfor %}
+      </div>
+    </div></div></section>
+    <section class="col-12 col-lg-4"><div class="card h-100"><div class="card-body">
+      <h2 class="h5">Delivered sales</h2>
+      <strong class="dashboard-total">${{ total_sales|floatformat:2 }}</strong>
+      <p class="text-secondary">Completed revenue to date</p>
+    </div></div></section>
+  </div>
+  <section class="card"><div class="card-body p-0"><h2 class="h5 p-3 mb-0">Recent orders</h2>
+    <div class="list-group list-group-flush">
+    {% for order in recent_orders %}
+    <div class="list-group-item d-flex flex-wrap justify-content-between gap-3">
+      <strong>{{ order.order_number }}</strong
+      ><span>{{ order.user.email }}</span
+      ><span class="status-pill">{{ order.get_status_display }}</span
+      ><strong>${{ order.total_amount|floatformat:2 }}</strong>
+    </div>
+    {% empty %}
+    <p class="list-group-item text-secondary mb-0">No orders have been placed yet.</p>
+    {% endfor %}
+    </div>
+  </div></section>
+</main>
+{% endblock %}
