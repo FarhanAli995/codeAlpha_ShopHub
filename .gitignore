@@ -24,8 +24,7 @@ db.sqlite3-journal
 staticfiles/
 
 # ── Media uploads (user content) ─────────────────
-# Uncomment the next line if you do NOT want to commit media to git:
-# static/media/
+static/media/
 
 # ── Environment variables ─────────────────────────
 .env
